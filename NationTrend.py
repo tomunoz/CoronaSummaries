@@ -24,7 +24,7 @@ def align_yaxis(ax1, v1, ax2, v2):
     miny, maxy = ax2.get_ylim()
     ax2.set_ylim(miny+dy, maxy+dy)
 
-
+# function to plot country data along with state/territory data when country == US
 def plot_data(data_df, is_US):
     #
     # define the plot object
@@ -62,14 +62,17 @@ def plot_data(data_df, is_US):
     deaths_average_curve = ax2.plot(index, deaths_average, label="Deaths Average", color='black', linestyle='dashed')
     deaths_curve = ax2.plot(index, deaths, label="Deaths", color='black')
     if ((max_infections_average - max_deaths_average) < 3000):
-        correction_factor = 1
+        correction_factor = 6.5
     elif ((max_infections_average - max_deaths_average) < 6000):
-        correction_factor = 2
+        correction_factor = 5
     elif ((max_infections_average - max_deaths_average) < 15000):
-        correction_factor = 3
-    else:
         correction_factor = 4
-    upperlimit = max_deaths_average * ((max_infections_average - max_deaths_average)/max_deaths_average)/correction_factor
+    else:
+        correction_factor = 3.5
+    #upperlimit = max_deaths_average * ((max_infections_average - max_deaths_average)/max_deaths_average)/correction_factor
+    upperlimit = max_deaths_average * correction_factor
+    print('upperlimit = ' + str(upperlimit) +
+          ', max infectins avg = ' + str(max_infections_average) + ', max deaths avg = ' + str(max_deaths_average) + ', correction factor = ' + str(correction_factor))
     ax2.set_ylim(0, upperlimit)
     # plots to go on primary y axis (left)
     infections_average_curve = ax1.plot(index, infections_average, label="Infections Average", color='g', linestyle='dashed')
@@ -86,14 +89,14 @@ def plot_data(data_df, is_US):
     ax2.yaxis.label.set_color("black")
     #
     if (is_US == "Yes"):
-        chart_title = state + " Infections & Deaths"
+        chart_title = state + " Daily Infections & Deaths"
     else: 
-        chart_title = nation + " Infections & Deaths"
+        chart_title = nation + " Daily Infections & Deaths"
     plt.title(chart_title)
     align_yaxis(ax1, 0, ax2, 0)
     plt.show()
 
-
+# function to gather user input for country to visualize along with state/territory when country == US
 def get_region(regions):
     print(regions)
     print('\n')
@@ -145,12 +148,10 @@ nation_data_df = nation_data_df.fillna(0)
 
 plot_data(nation_data_df, is_US="Not Necessarily")
 
-
 #
 # read state data only if nation == "US" up above.
 # do not change the nation value here.
 #
-
 if nation == "US":
     state_data_df = pd.DataFrame()
     state_data_df["Infections"] = state_infections_data_df[state]
@@ -162,6 +163,3 @@ if nation == "US":
 
     plot_data(state_data_df, is_US='Yes')
   
-
-
-
