@@ -3,7 +3,7 @@ Personal python scripts that scrape covid-19 data from Johns Hopkins github repo
 
 Johns Hopkins data is updated around 11:30pm Eastern so these scripts should be run after midnight.
 
-4 python scripts:
+5 python scripts:
 
 GlobalCoronaDailyInfections.py
   Creates various charts of infections, cumulative and daily, at global level for countries that exceed a minimum threshold of infections.
@@ -17,6 +17,13 @@ USCoronaDailyInfections.py
 USCoronaDailyDeaths.py
   Same as GlobalCoronaDailyDeaths.py but for US states only
 
+NationTrend.py
+  Creates a country view of infections and deaths plus running 7 day average for each.
+  Needs to be run after the other 4 scripts are finished since they create 4 xlsx files used by this script
+       DifferenceTranspose.xlsx
+       DifferenceTransposeDeaths.xlsx
+       StatesDifferenceTranspose.xlsx
+       StatesDeathsDifferenceTranspose.xlsx
 
 
 There are some enhancements I'd like to make as time allows:
